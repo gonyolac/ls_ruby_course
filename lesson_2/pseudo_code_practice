@@ -1,0 +1,71 @@
+pseudo_code_practice
+
+get first integer input
+get second integer input 
+perform + operation on integers
+return sum of integers
+
+______________
+
+START
+
+SET number1 
+GET number from user
+
+SET number2
+GET number from user
+
+DO number1 + number2 
+
+PRINT sum 
+
+END
+______________
+
+set new variable as long string to be returned
+iterate over string array
+return variable to display concatenated string
+______________
+
+START
+
+#given string array
+
+SET empty long_string 
+SET iterator = 0 
+
+WHILE  iterator 0 < length of array 
+  SET long_string = long_string + array element 
+  iterator += 1
+
+PRINT long_string   
+
+END
+______________
+
+set an empty array for return array
+iterate over current integer array, adding 1 to the iterator (to allow every other selection)
+store value into the return array during iteration
+return new array
+______________
+
+START 
+
+SET empty_array
+SET iterator = 0 
+
+WHILE iterator < length of array 
+  IF array element's index is even 
+    store array element to empty_array
+  iterator += 2   
+
+PRINT empty_array  
+
+END 
+
+
+
+
+
+
+
