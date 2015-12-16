@@ -2,8 +2,8 @@
 loop do 
   puts "Welcome to the Loan/Mortgage Calculator"
 
-  #Required information from user inputs  
-  #Fix error conditions (i.e. negative values, empty input)
+  # Required information from user inputs  
+  # Fix error conditions (i.e. negative values, empty input)
   loan_amount = ''
   loop do 
     puts "Input the loan amount: "
@@ -37,26 +37,26 @@ loop do
     end     
   end 
 
-  #things to calculate
+  # things to calculate
   m_rate = a_rate / 1200 
 
   m_duration = y_duration * 12 
 
   puts "Calculating monthly payment amount..."
-  #formula is Payment = (Loan Amount)[c(1+c)^n]/[(1+c)^n - 1]
-  X = (1 + m_rate)**m_duration #(1+c)^n
+  # formula is Payment = (Loan Amount)[c(1+c)^n]/[(1+c)^n - 1]
+  X = (1 + m_rate)**m_duration # (1+c)^n
   value_above = loan_amount * X * m_rate 
   value_below = X - 1 
   result = (value_above / value_below).to_f.round(2)
 
-  #final calculation 
+  # final calculation 
 
   puts "Total monthly payment of ==> #{result} per month <== to repay loan in #{y_duration} years at #{a_rate}%"
-  #return result 
-  #perform recalc loop (see calculator.rb)
+  # return result 
+  # perform recalc loop (see calculator.rb)
   puts "Do another loan calculation? (Y to calculate again)"
   answer = gets.chomp 
   break unless answer.downcase().start_with?('y')
 end 
   
-  puts "==> Calculator Shutdown <=="
+puts "==> Calculator Shutdown <=="

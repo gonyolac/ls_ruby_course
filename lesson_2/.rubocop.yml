@@ -34,3 +34,13 @@ Style/StringLiterals:
 
 Metrics/LineLength:
   Enabled: false
+
+Style/TrailingWhitespace:
+  Description: 'Avoid trailing whitespace.'
+  StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#no-trailing-whitespace'
+  Enabled: false
+
+Style/TrailingBlankLines:
+  Description: 'Checks trailing blank lines and final newline.'
+  StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#newline-eof'
+  Enabled: false  
