@@ -94,7 +94,8 @@ class Light
     @color = color
   end
 
-  def self.information
+  def self.information 
+  # originally self.light_information (light was redundant)
     "I want to turn on the light with a brightness level of 
     super high and a colour of green"
   end
