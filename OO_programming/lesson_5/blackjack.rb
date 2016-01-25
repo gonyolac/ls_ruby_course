@@ -1,32 +1,53 @@
-# Classes: BlackjackTable Player Dealer Game
+# Classes: Card Player Human Dealer Game
 # Modules: Deck
-require 'pry'
 
-module Deck
-  SUITS = ['Hearts', 'Diamonds', 'Spades', 'Clubs']
-  FACES = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
-end
-
-class BlackjackTable
-  MAGIC_NUMBER = 21
-  include Deck
-
-  attr_accessor :hand, :current_card_count
+class Card
+  SUITS = %w(Hearts Diamonds Spades Clubs)
+  FACES = %w(2 3 4 5 6 7 8 9 10 J Q K A)
 
   def initialize
-    @@aggregate_card_list = []
+    @face = ''
+    @suit = ''
+  end
+
+  def random_face
+    @face = FACES.sample
+  end
+
+  def random_suit
+    @suit = SUITS.sample
+  end
+
+  def to_s
+    @face + @suit
+  end
+end
+
+class Player
+  
+  BUST_VALUE = 21
+
+  attr_accessor :hand, :current_card_count, :name
+
+  def initialize
     @hand = []
+    @@aggregate_card_list = []
     @current_card_count = 0
+    @name = ''
+    @new_card = Card.new
   end
 
   def hit
-    random_card = FACES.sample + " of " + SUITS.sample
-    while @@aggregate_card_list.index(random_card)
-      random_card
+    local_card = ''
+    loop do
+      @new_card.random_face
+      @new_card.random_suit 
+      local_card = @new_card.to_s
+      break unless @@aggregate_card_list.index(local_card)
     end
 
-    @hand << random_card
-    @@aggregate_card_list << random_card
+    @hand << local_card
+    @@aggregate_card_list << local_card
   end
 
   def card_count
@@ -34,6 +55,8 @@ class BlackjackTable
     @hand.each do |x|
       if x.start_with?('K', 'Q', 'J', '10')
         count_arr << 10
+      elsif x.start_with?('2', '3', '4', '5', '6', '7', '8', '9')
+        count_arr << x[0].to_i
       elsif x[0] == 'A'
         current_sum = count_arr.inject(:+)
         if (current_sum).to_i < 11
@@ -41,55 +64,60 @@ class BlackjackTable
         else
           count_arr << 1
         end
-      else
-        count_arr << x[0].to_i
       end
     end
-    @current_card_count = count_arr.inject(:+)
-    return count_arr.inject(:+)
+    count_arr.inject(:+)
+  end
+
+  def set_current_card_count
+    @current_card_count = card_count
   end
 
   def bust?
-    # include a card count method with condition
-    if @current_card_count.to_i > MAGIC_NUMBER
-      return true
+    @current_card_count.to_i > BUST_VALUE
+  end
+
+  def reset
+    @hand = []
+  end
+end
+
+class Human < Player
+  def set_name
+    loop do
+      puts 'Input your name: '
+      @name = gets.chomp
+      break if @name.size > 0
+      puts 'Input a valid name'
     end
   end
+end
 
-  def self.reset_agg_card_list
-    @@aggregate_card_list.clear
+class Dealer < Player
+  BOT_NAMES = %w(R2D2 C3PO BB8)
+
+  def set_bot_name
+    @name = BOT_NAMES.sample
   end
-
-end
-
-class Player < BlackjackTable
-end
-
-class Dealer < BlackjackTable
 end
 
 class Game
-  BOT_NAMES = ["R2D2", "C3PO", "BB8"]
-  attr_reader :player, :dealer
+  attr_reader :human, :dealer
 
   def initialize
-    @player = Player.new
+    @human = Human.new
     @dealer = Dealer.new
-    @player_name = ''
-    @computer_name = ''
   end
 
   def start
-    set_names
+    set_players_names
     loop do
       loop do
-        welcome_message
-        reset
+        reset_deck
         initial_deal
-        show_initial_cards
-        player_turn
-        player_bust_check
-        break if @player.bust?
+        human_turn
+        human_bust_check
+        break if @human.bust?
         dealer_turn
         break if @dealer.bust?
         show_result
@@ -106,74 +134,72 @@ class Game
   private
 
   def welcome_message
-    puts "============================="
-    puts "============================="
-    puts "====Welcome to Blackjack!===="
-    puts "============================="
-    puts "============================="
+    puts "Welcome to Blackjack"
   end
 
-  def set_names
-    set_player_name
-    set_computer_name
-  end
+  def play_again?
+    puts 'Play again? (y/n)'
+    play_answer = gets.chomp
 
-  def set_player_name
-    loop do
-      puts "Input your name: "
-      @player_name = gets.chomp
-      break if @player_name.size > 0
-      puts "Input a valid name"
+    if play_answer.downcase.start_with?('y')
+      return true
     end
   end
 
-  def set_computer_name
-    @computer_name = BOT_NAMES.sample
+  def set_players_names
+    @human.set_name
+    @dealer.set_bot_name  
   end
 
-  def reset
-    puts "<=#{@computer_name} shuffles the deck=>"
-    @player.hand.clear
-    @dealer.hand.clear
-    BlackjackTable.reset_agg_card_list
+  def reset_deck
+    @human.reset
+    @dealer.reset
   end
 
   def initial_deal
     @dealer.hit
-    @player.hit
+    @human.hit
     @dealer.hit
-    @player.hit
+    @human.hit
   end
 
   def show_initial_cards
-    puts "Your current hand: #{@player.hand}" 
+    puts "Your current hand: #{@human.hand}"
     puts "Dealer's hand: [#{@dealer.hand[0]}, Face-Down Card]"
   end
 
-  def player_turn
-    puts "=======#{@player_name}'s Turn======="
+  def human_turn
+    clear
+    welcome_message
+    show_initial_cards
+    puts "=======#{@human.name}'s Turn======="
     loop do
-      puts "Your current hand: #{@player.hand}" 
-      puts "Card Count: #{player.card_count}"
-      break if @player.bust?
-      puts "Hit or Stay?"
+      puts "Your current hand: #{@human.hand}"
+      puts "Card Count: #{human.card_count}"
+      @human.set_current_card_count
+      break if @human.bust?
+      puts 'Hit or Stay?'
       answer = gets.chomp.to_s
-      if answer.downcase.start_with?('s') || @player.bust?
+      if answer.downcase.start_with?('s') || @human.bust?
         break
       else
-        @player.hit
+        @human.hit
       end
     end
   end
 
   def dealer_turn
+    clear
     puts "=======Dealer's Turn!======="
     loop do
+      @dealer.set_current_card_count
       break if @dealer.bust?
       if @dealer.card_count < 17
         @dealer.hit
-        puts "<=Dealer hits!=>"
+        puts '<=Dealer hits!=>'
       elsif @dealer.card_count > 17
+        break
+      elsif @dealer.card_count == 17
         break
       end
     end
@@ -181,28 +207,28 @@ class Game
   end
 
   def dealer_bust_check
-    if @dealer.bust? == true
-    puts "=======Dealer busts!======="
-    puts "Dealer's Hand: #{@dealer.hand}"
-    puts "Card Count: #{@dealer.card_count}"
+    if @dealer.bust?
+      puts "=======#{@dealer.name} busts!======="
+      puts "#{@dealer.name}'s Hand: #{@dealer.hand}"
+      puts "Card Count: #{@dealer.card_count}"
     end
   end
 
-  def player_bust_check
-    if @player.bust? == true
-      puts "#{@player_name} busts!"
+  def human_bust_check
+    if @human.bust?
+      puts "#{@human.name} busts!"
     end
   end
 
   def show_result
-    puts "#{@player_name}'s Hand: #{@player.hand}"
-    puts "#{@computer_name}'s Hand: #{@dealer.hand}"
-    if @player.card_count > @dealer.card_count
+    puts "#{@human.name}'s Hand: #{@human.hand}"
+    puts "#{@dealer.name}'s Hand: #{@dealer.hand}"
+    if @human.card_count > @dealer.card_count
       display_card_counts
-      puts "+++++#{@player_name} wins!+++++"
-    elsif @dealer.card_count > @player.card_count
+      puts "+++++#{@human.name} wins!+++++"
+    elsif @dealer.card_count > @human.card_count
       display_card_counts
-      puts "+++++#{@computer_name} wins!+++++"
+      puts "+++++#{@dealer.name} wins!+++++"
     else
       display_card_counts
       puts "It's a tie!"
@@ -210,14 +236,17 @@ class Game
   end
 
   def display_card_counts
-    puts "#{@player_name}'s hand count: #{player.card_count}"
-    puts "#{@computer_name}'s hand count: #{dealer.card_count}"
+    puts "#{@human.name}'s hand count: #{human.card_count}"
+    puts "#{@dealer.name}'s hand count: #{dealer.card_count}"
   end
 
   def exit_message
-    puts "Thanks for playing #{@player_name}! Till next time!"
+    puts "Thanks for playing #{@human.name}! Till next time!"
+  end
+
+  def clear
+    system 'clear'
   end
 end
 
 Game.new.start
-
