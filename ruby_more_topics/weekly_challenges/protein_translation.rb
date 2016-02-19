@@ -25,8 +25,8 @@ class Translation
   # essentially, display the protein (key) where the inputted codon is present; DONE
   # scan the values in the hash then display corresponding key with the match DONE
   
-  # how to use key method to find occurence/match within the array
-  # 
+  # need to find out: how to use key method to find occurence/match within the array
+
   def self.of_rna(rna_strand)
     # display array with protein values, translated from rna_strand
     proteins = [] # final display array
@@ -52,7 +52,7 @@ class Translation
     #  proteins << self.of_codon(need_to_translate)
     #  protein_counter += 1
     #end
-    
+
     proteins
   end
 end
