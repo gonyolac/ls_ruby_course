@@ -9,34 +9,22 @@ class PhoneNumber
   INVALID_NUMBER = '0000000000'
   def initialize(input_number)
     @input_number = input_number
-    @verified_no = []
-    @area_code = []
+    @verified_no = ''
+    @area_code = ''
   end
 
   def number
-    trimmed_no = @input_number.tr(' ()-.','')
+    no_symbols = @input_number.tr(' ()-.','')
+    # returns phone number without any symbols
 
-    test = trimmed_no.size
+    test = no_symbols.size
 
     case test
     when 10
-      trimmed_no = trimmed_no.tr('abcdefghijklmnopqrstuvwxyz','')
-      if trimmed_no.size == 10
-        @verified_no << trimmed_no
-        string(@verified_no)
-      else
-        INVALID_NUMBER
-      end
+      no_letters = no_symbols.tr('abcdefghijklmnopqrstuvwxyz','')
+      no_letters.size == 10 ? @verified_no = no_letters : INVALID_NUMBER
     when 11
-      temp = trimmed_no.split('')
-      if temp[0] == '1'
-        temp.shift
-        trimmed_no = string(temp)
-        @verified_no << trimmed_no
-        string(@verified_no)
-      else
-        INVALID_NUMBER
-      end
+      no_symbols.index('1') == 0 ? @verified_no = no_symbols[1..10] : INVALID_NUMBER
     else
       INVALID_NUMBER
     end
@@ -44,25 +32,14 @@ class PhoneNumber
 
   def area_code
     number
-    if string(@verified_no) != INVALID_NUMBER
-      temp = @verified_no.join('').split('')
-      @area_code << string(temp[0..2])
-      string(@area_code)
-    else
-      INVALID_NUMBER
-    end
+    @area_code = @verified_no[0..2]
   end
 
   def to_s
     number
     area_code
-    temp = string(@verified_no)
-    '(' + string(@area_code) + ') ' + temp[3..5] + '-' + temp[6..9]
-  end
-
-  private
-
-  def string(array)
-    array.join('')
+    '(' + @area_code +') ' + @verified_no[3..5] + '-' + @verified_no[6..9]
   end
 end
+
+
