@@ -1,6 +1,6 @@
 class Trinary
   def initialize(number)
-    number =~ /\D/ ? @number = '0' : @number = number
+    number =~ /[^012]/ ? @number = '0' : @number = number
   end
 
   def to_decimal
