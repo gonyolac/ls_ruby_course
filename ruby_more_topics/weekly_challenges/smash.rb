@@ -3,6 +3,5 @@ require 'pry'
 
 def smash(string)
   filtered = string.gsub(/[\W]/, '')
-  string_array = filtered.split('')
-  final_string = string_array.inject {|sum, n| sum + (' ' + n)}
+  final_string = filtered.split('').join(' ')
 end
