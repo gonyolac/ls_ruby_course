@@ -5,6 +5,3 @@ def smash(string)
   filtered = string.gsub(/[^a-zA-Z]/, '')
   final_string = filtered.split('').join(' ')
 end
-
-
-smash('hello, world! 330')
