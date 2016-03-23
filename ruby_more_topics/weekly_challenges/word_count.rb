@@ -1,4 +1,5 @@
-#use hash
+# filter out all punctuations
+# hash key must be the first occurence of a word in the text "Then..then" -> key: Then
 require 'pry'
 
 test = 'Then Almitra spoke again and said..."And what of Marriage, master?" And he answered saying:
@@ -15,18 +16,19 @@ but let each of you be alone, Even as the strings of a lute are alone though the
  
 def word_count(text)
   final_list = Hash.new
-  filtered = text.gsub(/[^a-zA-Z\s]/, ' ')    #filter out all punctuations
+  filtered = text.gsub(/[^a-zA-Z\s]/, ' ')
   all_words = filtered.split
-  # hash key must be the first occurence of a word in the text "Then..then" -> key: Then
-  possible_keys = all_words.each do |x| # convert each word in array into hash key
+
+  possible_keys = all_words.each do |x|
     if !final_list.has_key?(x.downcase) 
       final_list[x] = 0
     end
   end
+
   scanning_pool = all_words.map do |x|
     x.downcase
   end
-  # Array#count for number of occurences in scanning_pool
+
   final_list.each_key do |word_key|
     if scanning_pool.include?(word_key)
       final_list[word_key] = scanning_pool.count(word_key)
