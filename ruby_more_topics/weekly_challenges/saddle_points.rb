@@ -8,22 +8,17 @@ require 'pry'
 
 class Matrix
   def initialize(matrix_string)
-    @matrix_string = matrix_string
+    @matrix_string = matrix_string.split("\n").map do |x| 
+      x.split(' ').map {|x| x.to_i}
+    end
   end
 
   def rows
-    line_split = @matrix_string.split("\n")
-    formatted_lines = line_split.map do |x| 
-      x.split(' ').map! {|x| x.to_i}
-    end
+    @matrix_string
   end
 
   def columns
-    line_split = @matrix_string.split("\n")
-    formatted_lines = line_split.map do |x| 
-      x.split(' ').map! {|x| x.to_i}
-    end
-    formatted_lines.transpose
+    @matrix_string.transpose
   end
 
   def saddle_points
@@ -33,10 +28,9 @@ class Matrix
     rows.each {|x| row_maxes << x.max}
     columns.each {|x| column_mins << x.min}
 
-    y_coords = column_mins.map.with_index{|x, i| row_maxes.index(x) ? i : x = nil} 
-
+    y_coords = column_mins.map.with_index{|x, i| row_maxes.index(x) ? i : x = nil}
     x_coords = row_maxes.map.with_index {|x, i| column_mins.index(x) ? i : x = nil}
-    
+
     y_coords.delete(nil)
     x_coords.delete(nil)
 
