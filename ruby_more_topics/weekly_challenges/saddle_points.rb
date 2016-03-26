@@ -12,18 +12,18 @@ class Matrix
   end
 
   def rows
-    first_array = @matrix_string.split("\n")
-    second_array = first_array.map do |x| 
+    line_split = @matrix_string.split("\n")
+    formatted_lines = line_split.map do |x| 
       x.split(' ').map! {|x| x.to_i}
     end
   end
 
   def columns
-    first_array = @matrix_string.split("\n")
-    second_array = first_array.map do |x| 
+    line_split = @matrix_string.split("\n")
+    formatted_lines = line_split.map do |x| 
       x.split(' ').map! {|x| x.to_i}
     end
-    second_array.transpose
+    formatted_lines.transpose
   end
 
   def saddle_points
@@ -42,24 +42,6 @@ class Matrix
 
     zipped_x = x_coords.zip
     zipped_y = y_coords.zip
-    #binding.pry
-    coords_list = []
-
-    if zipped_y.size > zipped_x.size
-      coords_list = zipped_y.each do |x|
-        zipped_x.each do |y|
-          x.unshift(y)
-        end
-      end
-    else
-      coords_list = zipped_x.each do |x|
-        zipped_y.each do |y|
-          x << y
-        end
-      end
-    end
-
-    coords_list.map! {|x| x.flatten}
-    #binding.pry
+    coords_list = zipped_x.product(zipped_y).map {|x| x.flatten}
   end
 end
