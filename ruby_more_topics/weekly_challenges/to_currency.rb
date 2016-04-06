@@ -10,5 +10,5 @@ def to_currency(number_string)
   base = @whole_dollar_amt.split('').reverse.each_slice(3).to_a.reverse
   by_threes = base.map {|x| x.reverse.inject(&:+)}
   combined = by_threes.inject {|acc, chunks| acc + ',' + chunks}
-  final = combined + '.' + @change
+  final = '$' + combined + '.' + @change
 end
