@@ -6,33 +6,12 @@ class Triangle
   end
 
   def rows
-    sequence = []
-    counter = 0
-      until counter == @number_of_rows do 
-        sequence << next_row(counter)
-        counter += 1
+    sequence = Array.new(@number_of_rows) { |x| x = Array.new(x + 1, 1) }
+    2.upto(sequence.size - 1) do |y|
+      1.upto(sequence[y].size - 2) do |z|
+        sequence[y][z] = sequence[y - 1][z] + sequence[y - 1][z - 1]
       end
-    sequence
-  end
-
-  private
-
-  def next_row(row_number)
-    row_array = [1]
-    counter = 1
-    until counter == row_number + 1 do
-      value = combination(row_number, counter)
-      row_array << value
-      counter += 1
     end
-    row_array
-  end
-
-  def combination(n, r)
-    factorial(n) / (factorial(r) * factorial(n - r))
-  end
-
-  def factorial(number)
-    number == 0 ? 1 : number.downto(1).inject(:*)
+    sequence
   end
 end
