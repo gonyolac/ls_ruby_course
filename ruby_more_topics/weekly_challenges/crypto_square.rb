@@ -5,18 +5,18 @@ class Crypto
   end
 
   def normalize_plaintext
-    @normalized = @unfiltered.gsub(/\W/,'').downcase
+    @unfiltered.gsub(/\W/,'').downcase
   end
 
   def size
     normalize_plaintext
-    square_root = Math.sqrt(@normalized.length).round(1)
+    square_root = Math.sqrt(normalize_plaintext.length).round(1)
     square_root.to_s.end_with?('0') ? square_root.to_i : square_root.round(1).to_i + 1
   end
-  
+
   def plaintext_segments
     size
-    @normalized.scan(/.{1,#{size}}/)
+    normalize_plaintext.scan(/.{1,#{size}}/)
   end
 
   def ciphertext
