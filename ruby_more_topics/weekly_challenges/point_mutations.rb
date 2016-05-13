@@ -1,3 +1,4 @@
+require 'pry'
 class DNA
   def initialize(strand)
     @strand = strand
