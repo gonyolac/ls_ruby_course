@@ -1,4 +1,3 @@
-#python runserver.py -a google -u darthcaloyy@gmail.com -p 36y808vw -st 13 -k AIzaSyBBwfObpl2_YmEGpROmNzp1kd5eKoBllVg -l "Fenway Park, Boston" 
 require 'pry'
 class Event
 
