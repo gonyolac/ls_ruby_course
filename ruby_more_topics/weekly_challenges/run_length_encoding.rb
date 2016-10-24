@@ -9,8 +9,8 @@ class RunLengthEncoding
     base = data.split('')
     modified = base.each_with_index.map {|x, i| x =~ /\D/ ? (base[i-1] =~ /\d/ ? x : "1" + x) : x }
     counts = modified.join('').split(/\D/)
+    binding.pry
     data_points = modified.join('').split(/\d/).select {|x| x != ''}
     data_points.each_with_index.map{|x, i| x * counts[i].to_i}.join('')
   end
 end
-

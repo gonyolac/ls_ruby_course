@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require_relative 'bowling.rb'
+require_relative 'bowling'
 
 class GameTest < Minitest::Test
   def setup
