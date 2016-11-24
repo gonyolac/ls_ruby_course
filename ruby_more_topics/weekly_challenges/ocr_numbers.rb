@@ -25,6 +25,6 @@ class OCR
 
   def lookup(binary_font)
     base = binary_font.split("\n").map {|x| x.scan(/.{1,3}/)}.map {|x| x.empty? ? ["   "] : x}
-    base.transpose.map {|x| number = REFERENCE.key(x.map{|y| y.rstrip << "\n" }.join) ? REFERENCE.key(x.map{|y| y.rstrip << "\n" }.join).to_s : "?" }.join
+    base.transpose.map {|x| REFERENCE.key(x.map{|y| y.rstrip << "\n" }.join) ? REFERENCE.key(x.map{|y| y.rstrip << "\n" }.join).to_s : "?" }.join
   end
 end
