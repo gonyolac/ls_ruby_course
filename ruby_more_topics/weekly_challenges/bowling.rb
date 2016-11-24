@@ -1,6 +1,3 @@
-#python runserver.py -a google -u darthcaloyy@gmail.com -p 36y808vw -st 10 -t 1 -sd 5 -k AIzaSyBBwfObpl2_YmEGpROmNzp1kd5eKoBllVg -l "Norfolk, Virginia" 
-#python runserver.py -a google -u cmartinn88@gmail.com -p 36y808vw -st 10 -t 1 -sd 5 -k AIzaSyBBwfObpl2_YmEGpROmNzp1kd5eKoBllVg -l "Norfolk Pagoda" -ns
-
 require 'pry'
 class Game 
   attr_accessor :frames, :current_pins, :max_rolls

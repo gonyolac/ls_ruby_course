@@ -19,21 +19,23 @@ end
 class Animal
   include Walkable
 
+  def initialize
+    @test = ''
+  end
+
   def speak 
     "I'm an animal, and I speak!"
   end
 end
 
-# puts "---Animal method lookup---"
-# puts Animal.ancestors
+puts "---Animal method lookup---"
+puts Animal.ancestors
 
-fido = Animal.new
-p fido.speak
-p fido.swim
+# fido = Animal.new
+# p fido.speak
+# p fido.swim
 
 class GoodDog < Animal
   include Swimmable
   include Climable
 end
-
-puts 
