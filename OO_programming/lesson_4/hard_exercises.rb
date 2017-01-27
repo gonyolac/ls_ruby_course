@@ -90,10 +90,3 @@ class Motorboat < Boats
     super(1, 1, km_traveled_per_liter, liters_of_fuel_capacity)
   end
 end
-
-
-
-
-
-
-
