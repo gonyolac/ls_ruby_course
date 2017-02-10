@@ -71,3 +71,5 @@ class Object
   end
 end
 =end
+
+p one(times(two))
