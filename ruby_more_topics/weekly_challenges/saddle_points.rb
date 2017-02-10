@@ -4,13 +4,9 @@
 # return all possible saddle points in given matrix
 # matrix.rows.class => Array
 
-require 'pry'
-
 class Matrix
   def initialize(matrix_string)
-    @matrix_string = matrix_string.split("\n").map do |x| 
-      x.split(' ').map {|x| x.to_i}
-    end
+    @matrix_string = matrix_string.split("\n").map {|line| line.split(' ').map {|x| x.to_i}} 
   end
 
   def rows
